@@ -8,12 +8,46 @@ body {
   margin: 0;
 }
 
+header {
+  position: fixed;
+  top: 4;
+  width: 100%;
+  background-color: #fff;
+  z-index: 1000;
+}
+
 header nav {
   display: flex;
-  justify-content: start;
+  justify-content: space-between;
   align-items: center;
   border-bottom: 1px solid #f4f1ef;
   padding: 0 10em;
+}
+
+.nav-left {
+  display: flex;
+  align-items: center;
+}
+
+.icons {
+  position: relative;
+  display: flex;
+  gap: 1em;
+  cursor: pointer;
+}
+
+.badge {
+  position: absolute;
+  right: -1em;
+  border-radius: 50%;
+  width: 1em;
+  height: 1em;
+  background-color: #4ade80;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  padding: 0.15em;
 }
 
 nav ul {
@@ -27,7 +61,7 @@ nav h1 {
 }
 
 nav h1 span {
-  color: blue;
+  color: #22bb33;
 }
 
 li {
@@ -46,7 +80,7 @@ footer {
 /* PRODUCT */
 .product-wrapper {
   margin: 0 10em;
-  padding: 0 0 10em 0;
+  padding: 8.5em 0 10em 0;
 }
 
 .product-container {
@@ -62,20 +96,64 @@ footer {
 
 .product-info {
   padding: 2em;
-  width: 35%;
+  width: 30%;
   box-shadow: 10px 5px 5px #f4f1ef;
 }
 
+.product-info p {
+  color: #475569;
+}
+
 .product-title {
-  font-size: 3em;
+  font-size: 2.5em;
   margin: 0;
   padding: 0;
 }
 
+.product-handle {
+  font-size: 1em;
+  padding-left: 0.25em;
+  color: #475569;
+  font-weight: 400;
+}
+
 .product-price {
-  font-size: 2em;
+  font-size: 1.75em;
   margin: 0;
   padding: 0;
+}
+
+.product-desc {
+  border-bottom: 1px solid #f4f1ef;
+  margin-top: 1em;
+  font-size: 0.85em;
+}
+
+.product-desc span:hover {
+  background-color: whitesmoke;
+}
+
+.product-desc-closed {
+  height: 2em;
+  overflow: hidden;
+  border-bottom: 1px solid #f4f1ef;
+  background-color: white;
+}
+
+.available-tag {
+  background-color: #4ade80;
+  border-radius: 0.5em;
+  font-size: 0.75em;
+  padding: 0.75em 1em;
+  color: white;
+  font-weight: 600;
+}
+
+.not-available-tag {
+  background-color: #ef4444;
+  border-radius: 0.5em;
+  font-size: 0.75em;
+  padding: 0.75em 1em;
 }
 
 img {
@@ -95,9 +173,9 @@ img:first-child {
 .message {
   width: 100%;
   text-align: center;
-  padding: 0.5em 0;
+  padding: 0.75em 0;
   background-color: black;
-  font-size: 1.1em;
+  font-size: 1em;
   color: white;
 }
 
@@ -111,6 +189,7 @@ img:first-child {
   display: flex;
   flex-direction: column;
   align-items: end;
+  padding-top: 1em;
 }
 
 .label-size {
@@ -122,7 +201,7 @@ img:first-child {
 
 .sizes {
   display: flex;
-  width: 70%;
+  width: 80%;
   flex-wrap: wrap;
   gap: 5px;
   align-items: end;
@@ -138,7 +217,7 @@ img:first-child {
 }
 
 .selected-size {
-  background-color: black;
+  background-color: #4ade80;
   color: white;
 }
 
@@ -156,11 +235,28 @@ button {
   font-size: 1em;
   color: white;
   border: none;
+  transition: background-color 0.3s ease, color 0.3s ease,
+    border-radius 0.3s ease;
 }
 
 button:hover {
-  background-color: #22bb33;
+  background-color: #4ade80;
   color: white;
   cursor: pointer;
   font-weight: bolder;
+  border-radius: 1.5em;
+}
+
+.toast-container {
+  position: fixed;
+  top: 3em;
+  right: 3em;
+  margin: 20px;
+  padding: 10px;
+  background-color: #4ade80;
+  color: #fff;
+  border-radius: 5px;
+  display: none;
+  z-index: 1000;
+  transition: opacity 0.5 ease;
 }

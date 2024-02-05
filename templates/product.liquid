@@ -15,9 +15,27 @@
         </main>
         <aside class="product-info">
             <h1 class="product-title">{{ product.title | capitalize }}</h1>
-            <h2>{{ product.handle | capitalize }}</h2>
-            <h1 class="product-price">$ {{product.price}} CAD </h1>
-            <p>{{product.description}}</p>
+            <h2 class="product-handle">{{ product.handle | capitalize }}</h2>
+            {%  assign price =  product.price %} 
+            {% assign formattedPrice = price | divided_by: 100 | number: 2 |  prepend: '$' |  append: '.00 CAD' %}
+            
+            <div style="display: flex; align-items: center; gap: 1em;">
+                <h1 id="product-price" class="product-price">{{formattedPrice}}</h1>
+
+                {% if  product.available == true %}
+                    <span class="available-tag">AVAILABLE</span>
+                {% else %}
+                    <span class="not-available-tag">OUT OF STOCK</span>
+                {% endif %}
+            </div>
+            
+            <div id="desc" class="product-desc" style="cursor: pointer;" onclick="desc()">
+                <span>
+                    <i class="fa-solid fa-chevron-down fa-lg"></i>
+                    About
+                </span>
+                <p>{{product.description}}</p>
+            </div>
             
             <div class="shoe-size-container">
                 <label class="label-size">Select Women's Size</label>
@@ -29,18 +47,27 @@
                     {% endfor %}
                 </div>
             </div>
-                        
-            <button onclick="submit()">ADD TO CART +</button>
+            <button onclick="addToCart()">ADD TO CART +</button>
         </aside>
+        <div id="toast" class="toast-container"></div>
     </section>
     </div>
 
     <script>
-        let sizeIsSelected = false;
-
-        // add/remove class to shoe-size element when clicked
-        const sizes = document.getElementsByClassName("shoe-size");
+        if (!localStorage.getItem("cartItems")) localStorage.setItem("cartItems", 0);
         
+        let cart = JSON.parse(localStorage.getItem("cartItems"));
+
+        const desc = (e) => {
+            if (document.getElementById("desc").classList[document.getElementById("desc").classList.length - 1] === "product-desc") {
+                document.getElementById("desc").classList.add("product-desc-closed")
+            } else {
+                document.getElementById("desc").classList.remove("product-desc-closed")
+            }         
+        }
+
+        let sizes = document.getElementsByClassName("shoe-size");
+        let sizeIsSelected = false;
         for (let i = 0; i < sizes.length; i++) {
             sizes[i].addEventListener("click", (e) => {
             if (!sizeIsSelected) {
@@ -58,21 +85,14 @@
             }
         });
         }
-
-
-        //save product price
-        // const saveProduct = (product) => {
-        //     localStorage.setItem(product.title, product.price)
-        // }
         
-        // Save selected product in mocked server
-        const submit = () => {
+        const addToCart = () => {
             let shoeSize = localStorage.getItem("shoe-size");
             let formData = {
             quantity: 1,
             id: 123123,
             shoeSize,
-            price: 400.00,
+            price: document.getElementById("product-price").textContent,
             };
 
             fetch('/cart/add.js', {
@@ -81,11 +101,25 @@
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify(formData)
-            }).then((res) => console.log(res)
-            .catch((err) => console.log(err)))
+            }).then((res) => {
+                console.log(cart);
+                localStorage.setItem("cartItems", cart += 1);
+                showToast("Item added to your basket🛍️!")
+                setTimeout(() => {
+                    window.location.reload()
+                }, 3000)
+            })
+            .catch((err) => console.log(err))
         }
 
-
+        function showToast(message) {
+            let toastContainer = document.getElementById('toast');
+            toastContainer.textContent = message;
+            toastContainer.style.display = 'block';
+            setTimeout(function () {
+                toastContainer.style.display = 'none';
+            }, 3000);
+        }
     </script>
 
 {% endblock %}

@@ -8,20 +8,28 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
 </head>
 <body class="main">
 
-<header>
+  <header>
   <div class="message">Free shipping to Canada on all orders. Product prices are inclusive of duties.</div>
 
   <nav>
-    <h1>RUNNERS<span>4</span>ALL</h1>
-    <ul>
-      <li>WOMEN</li>
-      <li>MEN</li>
-      <li>KIDS</li>
-      <li>STORES</li>
-    </ul>
+    <div class="nav-left">
+      <h1>RUNNERS<span>4</span>ALL</h1>
+      <ul>
+        <li>WOMEN</li>
+        <li>MEN</li>
+        <li>KIDS</li>
+        <li>STORES</li>
+        </ul>
+    </div>
+    <div class="icons">
+      <i class="fa-solid fa-magnifying-glass fa-xl"></i>
+      <i class="fa-solid fa-bag-shopping fa-xl"></i> 
+      <div id="badge" class="badge"></div>
+    </div>
   </nav>
 </header>
 
@@ -50,5 +58,14 @@
         
         
   </footer>
+  
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      let cart = localStorage.getItem('cartItems');
+      let badge = document.getElementById('badge');
+      if (badge) badge.innerHTML = cart;
+  });
+  </script>
+
 </body>
 </html>
