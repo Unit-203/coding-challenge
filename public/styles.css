@@ -44,16 +44,28 @@ li {
   display: flex;
   flex-wrap: wrap;
   flex: 1;
-  border: 1px solid red;
 }
 
 .product-info {
-  width: 25.6em;
-  border: 1px solid black;
+  padding: 2em;
+  width: 35%;
+  box-shadow: 10px 5px 5px #f4f1ef;
+}
+
+.product-title {
+  font-size: 3em;
+  margin: 0;
+  padding: 0;
+}
+
+.product-price {
+  font-size: 2em;
+  margin: 0;
+  padding: 0;
 }
 
 img {
-  width: 50%;
+  width: 25%;
   cursor: -moz-zoom-in;
   cursor: -webkit-zoom-in;
   cursor: zoom-in;
@@ -61,6 +73,9 @@ img {
 
 img:first-child {
   width: 100%;
+  margin-bottom: 1em;
+  border: 1px solid #f4f1ef;
+  box-shadow: 10px 5px 5px #f4f1ef;
 }
 
 .message {
@@ -75,4 +90,56 @@ img:first-child {
   display: flex;
   gap: 1em;
   padding: 1em 0;
+}
+
+.shoe-size-container {
+  display: flex;
+  flex-direction: column;
+  align-items: end;
+}
+
+.label-size {
+  text-align: end;
+  width: 100%;
+  margin-bottom: 0.5em;
+  font-weight: 600;
+}
+
+.sizes {
+  display: flex;
+  width: 70%;
+  flex-wrap: wrap;
+  gap: 5px;
+  align-items: end;
+  justify-content: end;
+}
+
+.shoe-size {
+  width: 2em;
+  height: 1em;
+  padding: 5px;
+  border: 1px solid whitesmoke;
+  text-align: center;
+}
+
+.shoe-size:hover {
+  background-color: black;
+  color: white;
+  cursor: pointer;
+}
+
+button {
+  padding: 2em;
+  width: 100%;
+  margin-top: 1em;
+  background-color: #f4f1ef;
+  border: 1px solid black;
+  font-size: 1em;
+}
+
+button:hover {
+  background-color: black;
+  color: white;
+  cursor: pointer;
+  font-weight: bolder;
 }
