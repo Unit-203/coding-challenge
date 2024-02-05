@@ -1,4 +1,8 @@
 /* LAYOUT */
+* {
+  font-family: "Roboto", sans-serif;
+}
+
 body {
   min-height: 100vh;
   margin: 0;
@@ -30,9 +34,19 @@ li {
   cursor: pointer;
 }
 
+footer {
+  background-color: black;
+  color: white;
+  height: 12em;
+  display: flex;
+  justify-content: space-between;
+  padding: 5em 10em;
+}
+
 /* PRODUCT */
 .product-wrapper {
   margin: 0 10em;
+  padding: 0 0 10em 0;
 }
 
 .product-container {
@@ -82,8 +96,9 @@ img:first-child {
   width: 100%;
   text-align: center;
   padding: 0.5em 0;
-  background-color: #f4f1ef;
+  background-color: black;
   font-size: 1.1em;
+  color: white;
 }
 
 .breadcrumb {
@@ -122,6 +137,11 @@ img:first-child {
   text-align: center;
 }
 
+.selected-size {
+  background-color: black;
+  color: white;
+}
+
 .shoe-size:hover {
   background-color: black;
   color: white;
@@ -131,14 +151,15 @@ img:first-child {
 button {
   padding: 2em;
   width: 100%;
-  margin-top: 1em;
-  background-color: #f4f1ef;
-  border: 1px solid black;
+  margin-top: 2em;
+  background-color: black;
   font-size: 1em;
+  color: white;
+  border: none;
 }
 
 button:hover {
-  background-color: black;
+  background-color: #22bb33;
   color: white;
   cursor: pointer;
   font-weight: bolder;

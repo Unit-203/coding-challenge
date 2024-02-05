@@ -23,15 +23,69 @@
                 <label class="label-size">Select Women's Size</label>
                 <div class="sizes">
                     {% for variant in product.variants %}
-                        <div class="shoe-size">
-                            <span>{{ variant.title }}</span>
+                        <div id={{variant.id}} class="shoe-size">
+                            {{ variant.title }}
                         </div>
                     {% endfor %}
                 </div>
             </div>
                         
-            <button>ADD TO CART +</button>
+            <button onclick="submit()">ADD TO CART +</button>
         </aside>
     </section>
     </div>
+
+    <script>
+        let sizeIsSelected = false;
+
+        // add/remove class to shoe-size element when clicked
+        const sizes = document.getElementsByClassName("shoe-size");
+        
+        for (let i = 0; i < sizes.length; i++) {
+            sizes[i].addEventListener("click", (e) => {
+            if (!sizeIsSelected) {
+                e.target.classList.add("selected-size");
+                sizeIsSelected = true;
+                localStorage.setItem("shoe-size", e.target.innerHTML);
+            } 
+            
+            if (sizeIsSelected) {
+                sizeIsSelected = false;
+                for (let j = 0; j < sizes.length; j++) {
+                    sizes[j].classList.remove("selected-size");
+                }
+                e.target.classList.add("selected-size");
+            }
+        });
+        }
+
+
+        //save product price
+        // const saveProduct = (product) => {
+        //     localStorage.setItem(product.title, product.price)
+        // }
+        
+        // Save selected product in mocked server
+        const submit = () => {
+            let shoeSize = localStorage.getItem("shoe-size");
+            let formData = {
+            quantity: 1,
+            id: 123123,
+            shoeSize,
+            price: 400.00,
+            };
+
+            fetch('/cart/add.js', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(formData)
+            }).then((res) => console.log(res)
+            .catch((err) => console.log(err)))
+        }
+
+
+    </script>
+
 {% endblock %}

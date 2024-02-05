@@ -5,6 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>{{ product.title | escape }}</title>
   <link rel="stylesheet" type="text/css" href="./styles.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
 </head>
 <body class="main">
 
@@ -28,7 +31,24 @@
 {% endblock %}
 
 <footer class="footer">
-  <p>&copy; {{ 'now' | date: '%Y' }} Unit-203</p>
-</footer>
+  
+  <div>
+    <h3>FOR ORDER INQUIRIES</h3>
+    <p>
+      care@crepdogcrew.com <br/>
+      +91-9907077077 <br/>
+      Timings : 11AM - 8PM <br/>
+      Days : Mon-Sat
+    </p>  
+    <p class="copy">&copy; {{ 'now' | date: '%Y' }} RUNNERS4ALL</p>
+  </div>
+      
+  <div>
+    <h3>BUSINESS INQUIRIES</h3>
+    <p>info@runners4all.com</p>  
+  </div>
+        
+        
+  </footer>
 </body>
 </html>
