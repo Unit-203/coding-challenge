@@ -1,5 +1,27 @@
 {% layout "template.liquid" %}
 
 {% block content %}
-    <h1>{{ product.title | capitalize }}</h1>
+    <div class="product-wrapper">
+    <div class="breadcrumb">
+        <a href="#">Women's</a> | <a href="#">Runners</a> | <span>Gel-Kayano</span>
+    </div>
+    <section class="product-container">
+        <main class="product-images">
+            <img src="/images/glamour_view.png" alt="shoes-side">
+            <img src="/images/shoes.png" alt="shoes-side">
+            <img src="/images/side_view.png" alt="shoes-side">
+            <img src="/images/top_view.png" alt="shoes-side">
+            <img src="/images/bottom_view.png" alt="shoes-side">
+        </main>
+        <aside class="product-info">
+            <h1>{{ product.title | capitalize }}</h1>
+            <span>STARS HERE</span>
+            <h3>Price</h3>
+            <h5>(Includes duties)</h5>
+            <div>
+                <h5>Select Women's Size</h5> <h5>Size Chart</h5>
+            </div>
+        </aside>
+    </section>
+    </div>
 {% endblock %}
