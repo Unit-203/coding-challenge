@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>{{ product.title | escape }}</title>
+  <title>R4A | {{ product.title | escape }}</title>
   <link rel="stylesheet" type="text/css" href="./styles.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -13,7 +13,9 @@
 <body class="main">
 
   <header>
-  <div class="message">Free shipping to Canada on all orders. Product prices are inclusive of duties.</div>
+  <div class="message">
+    Free shipping to Canada on all orders. Product prices are inclusive of duties.
+  </div>
 
   <nav>
     <div class="nav-left">
@@ -27,8 +29,8 @@
     </div>
     <div class="icons">
       <i class="fa-solid fa-magnifying-glass fa-xl"></i>
-      <i class="fa-solid fa-bag-shopping fa-xl"></i> 
-      <div id="badge" class="badge"></div>
+      <i id="cart" class="fa-solid fa-bag-shopping fa-xl"></i> 
+      <div id="badge" class="hidden-badge"></div>
     </div>
   </nav>
 </header>
@@ -39,33 +41,112 @@
 {% endblock %}
 
 <footer class="footer">
-  
   <div>
     <h3>FOR ORDER INQUIRIES</h3>
     <p>
-      care@crepdogcrew.com <br/>
-      +91-9907077077 <br/>
-      Timings : 11AM - 8PM <br/>
+      care@runners4all.com <br/>
+      +1-404-707-7077 <br/>
+      Timings : 10AM - 8PM <br/>
       Days : Mon-Sat
     </p>  
     <p class="copy">&copy; {{ 'now' | date: '%Y' }} RUNNERS4ALL</p>
   </div>
-      
   <div>
     <h3>BUSINESS INQUIRIES</h3>
     <p>info@runners4all.com</p>  
   </div>
-        
-        
   </footer>
   
+  <div id="blocker" class="blocker hidden">asdas</div>
+  <section id="modal" class="modal hidden">
+    <div class="header-container">
+      <span>YOUR CART</span><i id="closeModal" class="fa-solid fa-x" style="cursor: pointer;"></i>
+    </div>
+    <div id="basket-items" class="basket-items">
+    </div>
+    <h1 id="total" style="margin-bottom: 0; text-align: end;">Total: </h1>
+    <button id="checkout">CHECK OUT <i class="fa-solid fa-cart-shopping fa-lg"></i></button>
+  </section>
+
   <script>
     document.addEventListener('DOMContentLoaded', function () {
       let cart = localStorage.getItem('cartItems');
       let badge = document.getElementById('badge');
-      if (badge) badge.innerHTML = cart;
+      if (badge && JSON.parse(cart) > 0) {
+        badge.innerHTML = cart;
+        badge.classList.remove("hidden-badge");
+        badge.classList.add("badge");
+      }
   });
-  </script>
+
+    let cartPanel = document.getElementById("cart")
+    cartPanel.addEventListener("click", () => {
+      document.getElementById("modal").classList.remove("hidden")
+      document.getElementById("blocker").classList.remove("hidden")
+    })
+
+    let closeModal = document.getElementById("closeModal")
+    closeModal.addEventListener("click", () => {
+      document.getElementById("modal").classList.add("hidden")
+      document.getElementById("blocker").classList.add("hidden")
+    })
+
+    let blocker = document.getElementById("blocker")
+    blocker.addEventListener("click", () => {
+      document.getElementById("blocker").classList.add("hidden");
+      document.getElementById("modal").classList.add("hidden");
+      document.getElementById("details").classList.add("hidden");
+    })
+
+    let itemsContainer = document.getElementById("basket-items")
+    let basket = JSON.parse(localStorage.getItem("basket"))
+
+    if (basket) {
+      let total = 0;
+      for (let i = 0; i < basket.length; i++) {
+        total += parseInt(basket[i].price.replace(/[^0-9]/g, ''));
+        let card = document.createElement("div");
+        card.classList.add("basket-item");
+        let left = document.createElement("div");
+        left.classList.add("icon");
+        left.style.position = "absolute";
+        left.style.left = "3em";
+        let thumbnail = document.createElement("img");
+        thumbnail.src = basket[i].image;
+        thumbnail.style.width = "100px";
+        let right = document.createElement("div");
+        right.classList.add("basket-info");
+        let title = document.createElement("h4");
+        title.style.margin = 0;
+        title.textContent = basket[i].name;
+        let size = document.createElement("h4");
+        size.style.margin = 0;
+        size.textContent = `Size: ${basket[i].shoeSize}`;
+        let price = document.createElement("h4");
+        price.textContent = basket[i].price;
+        price.style.fontSize = "0.75em";
+        card.style.display = "flex";
+        card.style.flexDirection = "column";
+        card.style.alignItems = "center";
+        left.append(thumbnail);
+        right.append(title,size,price);
+        card.append(left, right);
+        itemsContainer.append(card);
+      }
+      total = (total / 100).toFixed(2);
+      document.getElementById("total").textContent = `$${total} CAD`
+    } else {
+      let modal = document.getElementById("modal");
+      document.getElementById("checkout").classList.add("hidden");
+      document.getElementById("total").classList.add("hidden");
+      let message = document.createElement("h1");
+      message.textContent = "No items";
+      message.style.fontSize = "2em";
+      message.style.textAlign = "center"
+      modal.append(message);
+    }
+
+   </script>
 
 </body>
 </html>

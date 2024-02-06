@@ -7,14 +7,14 @@
     </div>
     <section class="product-container">
         <main class="product-images">
-            <img src="/images/glamour_view.png" alt="shoes-side">
-            <img src="/images/shoes.png" alt="shoes-side">
-            <img src="/images/side_view.png" alt="shoes-side">
-            <img src="/images/top_view.png" alt="shoes-side">
-            <img src="/images/bottom_view.png" alt="shoes-side">
+            <img class="mainImages" id="thumbnail" src="/images/glamour_view.png" alt="shoes-side" onclick="details()">
+            <img class="mainImages" src="/images/shoes.png" alt="shoes-side">
+            <img class="mainImages" src="/images/side_view.png" alt="shoes-side">
+            <img class="mainImages" src="/images/top_view.png" alt="shoes-side">
+            <img class="mainImages" src="/images/bottom_view.png" alt="shoes-side">
         </main>
         <aside class="product-info">
-            <h1 class="product-title">{{ product.title | capitalize }}</h1>
+            <h1 id="product-name" class="product-title">{{ product.title | capitalize }}</h1>
             <h2 class="product-handle">{{ product.handle | capitalize }}</h2>
             {%  assign price =  product.price %} 
             {% assign formattedPrice = price | divided_by: 100 | number: 2 |  prepend: '$' |  append: '.00 CAD' %}
@@ -51,6 +51,10 @@
         </aside>
         <div id="toast" class="toast-container"></div>
     </section>
+
+    <div id="details" style="background-color: white; overflow: hidden; padding: 2em" class="hidden">
+                    <img src="/images/glamour_view.png" alt="">
+    </div>
     </div>
 
     <script>
@@ -87,13 +91,24 @@
         }
         
         const addToCart = () => {
+            let basket;
+            if (localStorage.getItem("basket")) {
+                basket = JSON.parse(localStorage.getItem("basket"));
+            } else {
+                basket = [];
+            }
             let shoeSize = localStorage.getItem("shoe-size");
             let formData = {
-            quantity: 1,
             id: 123123,
-            shoeSize,
+            name: document.getElementById("product-name").textContent,
+            quantity: 1,
+            shoeSize: shoeSize.trim(),
             price: document.getElementById("product-price").textContent,
+            image: document.getElementById("thumbnail").src,
             };
+
+            basket.push(formData);
+            localStorage.setItem("basket", JSON.stringify(basket));
 
             fetch('/cart/add.js', {
                 method: 'POST',
@@ -107,18 +122,27 @@
                 showToast("Item added to your basket🛍️!")
                 setTimeout(() => {
                     window.location.reload()
-                }, 3000)
+                }, 2000)
             })
             .catch((err) => console.log(err))
         }
 
-        function showToast(message) {
+        const showToast = (message) => {
             let toastContainer = document.getElementById('toast');
             toastContainer.textContent = message;
             toastContainer.style.display = 'block';
             setTimeout(function () {
                 toastContainer.style.display = 'none';
-            }, 3000);
+            }, 2000);
+        }
+
+        const details = () => {
+            let seeImage = document.getElementById("details");
+            seeImage.classList.remove("hidden")
+            document.getElementById("blocker").classList.remove("hidden")
+            // let image = document.createElement("img");
+            // image.src = "/images/glamour_view.png";
+            // seeImage.append(image);
         }
     </script>
 
