@@ -1,48 +1,77 @@
 # Shopify Developer Challenge
 
-Welcome, potential Shopify Expert!
+![cover1](image.png)
 
-This challenge aims to gauge your Shopify skills through the creation of a simple Product Detail Page (PDP) using Shopify Liquid Syntax and the AJAX cart API, all contained within this repository.
-## Setup
+![cover2](image-1.png)
 
-As mentioned, the challenge is self contained within this repository so there will be no need to create a dev store or anything like that. Instead we created a little module that will show rendered liquid code, serve static assets, and handle the cart POST request for you. And while it helps if you have an understanding of node-js, it should be simple enough to run without any help.
+## Description
 
-Simply follow these instructions to get the project running:
+### Template file
 
-1. Fork this repository into your own github profile and make any changes in that repository space.
-2. Clone the repository onto your development environment.
-3. From the new folder, install the required modules using `npm install` (Or your favorite package manager).
-4. Start the development server using `npm run dev`.
+I started by writing the layout file. In the template document I opted for
+having the navbar and the footer abstracted away so I can concentrate only
+in the specifically in the item in the product file.
 
-You should now have a development server running on port `3000` that will display the default information.
+Starting with the template.liquid I:
 
-## Challenge Instructions
+- Updated the title of the document (adding the fake R4A brand) following SEO practice.
 
-*Congratulations! You have made it this far!* Now for the actual fun part.
+- Added a custom font cdn
 
-The simple app is a single route web server that serves liquid templates out of the `templates` folder. Inside that folder there is a base `template.liquid` folder as well as the main file, `product.liquid` which serves as the main template file. It would be best to keep the template files simple, but you should be able to add additional templates or template parts as required.
+- Added font-aweson icons cdn
 
-The data for the product page comes from the `product.json` file in the root of the main directory. This is a product object taken from an actual Shopify store and is passed to the rendering engine as the variable `product` which you should see in the `product.liquid` file.
+- Then I added a message that can be updated with new deals
 
-Any static files can be placed inside the `public` folder and they will be served from there. The images referenced in the product object are already inside that folder and can be accessed at `/images/{filename}.png`.
+- Added a LOGO, fake links and the cart Icon (to access user's shopping cart)
 
-So here is what we are looking for.
+- Added a minimal footer
 
-* Using the liquid templates and whatever static assets you need, create a single simple product detail page that renders the product details.
-* Make sure to add some style. You can do this with a simple vanilla CSS file, a `<style>` tagin the head of the page, or if you are comfortable - with your favorite css compiler.
-* The PDP should have an add to cart button that is clearly visible.
-* Using some front end javascript, attach a handler to the add to cart button that posts the appropriate information the `cart/add.js` route. That route will simply return the data `{ success: 1 }` so display a success message to let the user know their product was added correctly!
-* Make sure the add to cart request sends the appropriate data to the endpoint to add an item to the cart (Using the shopify API paradigm).
+In terms of the implemented JS in the template view I:
 
+- Added a function that reloads the shopping cart badge if a new item is added
 
-## Troubleshooting tips
+  - if the value stored is greater than zero I render the value and a green badge
 
-Since this is not _actually_ a shopify site, we can't expect it to behave exactly like a shopify site in terms of error handling. If an error occurs (as in a mis-typed variable, or bad liquid syntax) the page will return a 500 error. All errors are logged in the console so look out there for what might be going wrong. 
+- Next I added a coouple of events to open and closing the modal if the user clicks the shopping cart icon
 
-To stop the development server, simlpy do a `ctrl` + `c` and the node process will stop.
+- I also added a blocker element that darkens the background so the user can concentrate only in the cart information
 
-# LASTLY: THE MOST IMPORTANT PART
+- Finally, I added a last function that checks the state of the basket list. If there are items in the cart, we iterate over the list and create card for displaying the items accordingly.
 
-When you are done - remove _ALL_ of the text from this README, and replace it with a description of what you did. Tell us why you made the choices you did, what you would have liked to do better, what was your favorite part, and most importantly, what would you change if this we're _ACTUALLY_ a shopify theme.
+- While doing so, I kept track of the grand total and render the value in the shopping cart modal
 
-Once you have that done - Commit a new branch - and send us a link to your repo so that we can review what you did.
+- If there aren't element in the cart and users opens the cart, a message "No items" message is displayed
+
+### Product file
+
+For the product file I firstly added the template and the focused on making a wireframe for having a basic structure. I opted for a conventional approach of
+havin the main section on the right while having the picture on the left side of the screen.
+
+For this view I:
+
+- Added a breadcrumb with mocked links (suggesting the route took by the user)
+
+- I then continue with placing the images. One thing I'd liked to have done here is rendering the images with loop. However, when I realized of this, I think it was already to late for that.
+
+- After images I created the product info section with the proper information. I used liquid syntax to formatted the values accordingly.
+
+- I also added an "AVAILABLE" tag that updated if the available property changes: If the value gets to be false the badge will change to "Out of stock"
+
+-After that I added the description of the product. With it is collapsable. You can hide the information by clicking on it.
+
+-For the different sizes of shoes, I iterate over the sizes property and render selectors accordingly. If a size is selected then I save the size in the client thru localStorage (for future usage during the POST request)
+
+-I added also and "Add to cart" button and attached a function that extracts the selected information and makes a POST request to /cart/add using the fetchAPI. I await the result and if there is a 200 response we:
+
+- I update or store a "cartItems" value in localstorage
+- then I trigger a function that renders a toast to the user
+- And finally re-render the page to see the changes reflected
+- If we received a 500 or any error, we show in the client console for debugging purposes and an alert for the user. In the error I opted for showing just a simple message. However in a real project I'd have rendered the error message (error.response.data.message);
+
+- Finally, I added a function to show or hide a detailed image of the item
+
+### Final comments
+
+Thank you Rocco and Gabriel for considering me for the role. That alone makes me think that I'm on the right track in this field. About the project, my favorite part of doing this was learning about liquid and getting to use vanilla JS again (As I've been working with React for the last year). It was really fun and I'm confident that I can master liquid and it's intrincacies fast enought. Another thing that I think I should mention is that I participated in YYCHacks 2024 over the weekend (Friday to Sunday - a commitment I had already scheduled). So I didnt have much time to work on this.
+
+Thanks again!

@@ -1,7 +1,7 @@
 {% layout "template.liquid" %}
 
 {% block content %}
-    <div class="product-wrapper">
+<div class="product-wrapper">
     <div class="breadcrumb">
         <a href="#">Women's</a> | <a href="#">Runners</a> | <span>Gel-Kayano</span>
     </div>
@@ -53,9 +53,9 @@
     </section>
 
     <div id="details" style="background-color: white; overflow: hidden; padding: 2em" class="hidden">
-                    <img src="/images/glamour_view.png" alt="">
+        <img src="/images/glamour_view.png" alt="">
     </div>
-    </div>
+</div>
 
     <script>
         if (!localStorage.getItem("cartItems")) localStorage.setItem("cartItems", 0);
@@ -99,7 +99,7 @@
             }
             let shoeSize = localStorage.getItem("shoe-size");
             let formData = {
-            id: 123123,
+            id: Math.floor(Math.random() * 900000) + 100000,
             name: document.getElementById("product-name").textContent,
             quantity: 1,
             shoeSize: shoeSize.trim(),
@@ -140,9 +140,6 @@
             let seeImage = document.getElementById("details");
             seeImage.classList.remove("hidden")
             document.getElementById("blocker").classList.remove("hidden")
-            // let image = document.createElement("img");
-            // image.src = "/images/glamour_view.png";
-            // seeImage.append(image);
         }
     </script>
 
