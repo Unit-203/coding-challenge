@@ -1,5 +1,146 @@
 {% layout "template.liquid" %}
 
 {% block content %}
-    <h1>{{ product.title | capitalize }}</h1>
+<div class="product-wrapper">
+    <div class="breadcrumb">
+        <a href="#">Women's</a> | <a href="#">Runners</a> | <span>Gel-Kayano</span>
+    </div>
+    <section class="product-container">
+        <main class="product-images">
+            <img class="mainImages" id="thumbnail" src="/images/glamour_view.png" alt="shoes-side" onclick="details()">
+            <img class="mainImages" src="/images/shoes.png" alt="shoes-side">
+            <img class="mainImages" src="/images/side_view.png" alt="shoes-side">
+            <img class="mainImages" src="/images/top_view.png" alt="shoes-side">
+            <img class="mainImages" src="/images/bottom_view.png" alt="shoes-side">
+        </main>
+        <aside class="product-info">
+            <h1 id="product-name" class="product-title">{{ product.title | capitalize }}</h1>
+            <h2 class="product-handle">{{ product.handle | capitalize }}</h2>
+            {%  assign price =  product.price %} 
+            {% assign formattedPrice = price | divided_by: 100 | number: 2 |  prepend: '$' |  append: '.00 CAD' %}
+            
+            <div style="display: flex; align-items: center; gap: 1em;">
+                <h1 id="product-price" class="product-price">{{formattedPrice}}</h1>
+
+                {% if  product.available == true %}
+                    <span class="available-tag">AVAILABLE</span>
+                {% else %}
+                    <span class="not-available-tag">OUT OF STOCK</span>
+                {% endif %}
+            </div>
+            
+            <div id="desc" class="product-desc" style="cursor: pointer;" onclick="desc()">
+                <span>
+                    <i class="fa-solid fa-chevron-down fa-lg"></i>
+                    About
+                </span>
+                <p>{{product.description}}</p>
+            </div>
+            
+            <div class="shoe-size-container">
+                <label class="label-size">Select Women's Size</label>
+                <div class="sizes">
+                    {% for variant in product.variants %}
+                        <div id={{variant.id}} class="shoe-size">
+                            {{ variant.title }}
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+            <button onclick="addToCart()">ADD TO CART +</button>
+        </aside>
+        <div id="toast" class="toast-container"></div>
+    </section>
+
+    <div id="details" style="background-color: white; overflow: hidden; padding: 2em" class="hidden">
+        <img src="/images/glamour_view.png" alt="">
+    </div>
+</div>
+
+    <script>
+        if (!localStorage.getItem("cartItems")) localStorage.setItem("cartItems", 0);
+        
+        let cart = JSON.parse(localStorage.getItem("cartItems"));
+
+        const desc = (e) => {
+            if (document.getElementById("desc").classList[document.getElementById("desc").classList.length - 1] === "product-desc") {
+                document.getElementById("desc").classList.add("product-desc-closed")
+            } else {
+                document.getElementById("desc").classList.remove("product-desc-closed")
+            }         
+        }
+
+        let sizes = document.getElementsByClassName("shoe-size");
+        let sizeIsSelected = false;
+        for (let i = 0; i < sizes.length; i++) {
+            sizes[i].addEventListener("click", (e) => {
+            if (!sizeIsSelected) {
+                e.target.classList.add("selected-size");
+                sizeIsSelected = true;
+                localStorage.setItem("shoe-size", e.target.innerHTML);
+            } 
+            
+            if (sizeIsSelected) {
+                sizeIsSelected = false;
+                for (let j = 0; j < sizes.length; j++) {
+                    sizes[j].classList.remove("selected-size");
+                }
+                e.target.classList.add("selected-size");
+            }
+        });
+        }
+        
+        const addToCart = () => {
+            let basket;
+            if (localStorage.getItem("basket")) {
+                basket = JSON.parse(localStorage.getItem("basket"));
+            } else {
+                basket = [];
+            }
+            let shoeSize = localStorage.getItem("shoe-size");
+            let formData = {
+            id: Math.floor(Math.random() * 900000) + 100000,
+            name: document.getElementById("product-name").textContent,
+            quantity: 1,
+            shoeSize: shoeSize.trim(),
+            price: document.getElementById("product-price").textContent,
+            image: document.getElementById("thumbnail").src,
+            };
+
+            basket.push(formData);
+            localStorage.setItem("basket", JSON.stringify(basket));
+
+            fetch('/cart/add.js', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(formData)
+            }).then((res) => {
+                console.log(cart);
+                localStorage.setItem("cartItems", cart += 1);
+                showToast("Item added to your basket🛍️!")
+                setTimeout(() => {
+                    window.location.reload()
+                }, 2000)
+            })
+            .catch((err) => console.log(err))
+        }
+
+        const showToast = (message) => {
+            let toastContainer = document.getElementById('toast');
+            toastContainer.textContent = message;
+            toastContainer.style.display = 'block';
+            setTimeout(function () {
+                toastContainer.style.display = 'none';
+            }, 2000);
+        }
+
+        const details = () => {
+            let seeImage = document.getElementById("details");
+            seeImage.classList.remove("hidden")
+            document.getElementById("blocker").classList.remove("hidden")
+        }
+    </script>
+
 {% endblock %}
